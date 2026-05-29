@@ -1,0 +1,64 @@
+@import "tailwindcss";
+
+:root {
+  --black: #101010;
+  --black-card: #161616;
+  --black-hover: #1c1c1c;
+  --green: #99ce24;
+  --green-dim: #7aaa1b;
+  --white: #ffffff;
+  --gray: #747474;
+  --gray-light: #d9d9d9;
+  --border: #242424;
+  --border-hover: #99ce24;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  background: var(--black);
+  color: var(--white);
+  font-family: var(--font-ibm-plex), "IBM Plex Sans Thai", sans-serif;
+  min-height: 100dvh;
+}
+
+/* LOCOL card — asymmetric corners: TL + BR rounded, TR + BL sharp */
+.locol-card {
+  border-radius: 24px 0 24px 0;
+  border: 1px solid var(--border);
+  background: var(--black-card);
+  transition: border-color 0.2s ease;
+}
+
+.locol-card:hover {
+  border-color: var(--border-hover);
+}
+
+/* Pulse animation for "checking" state */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+.animate-pulse-slow {
+  animation: pulse-slow 2s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 4px;
+}
+::-webkit-scrollbar-track {
+  background: var(--black);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 2px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--green);
+}
