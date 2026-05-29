@@ -17,21 +17,9 @@ const POLL_INTERVAL = 30_000;
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <h2
-      className="text-[10px] font-bold uppercase tracking-[0.35em] mb-5"
-      style={{ color: "#3a3a3a" }}
-    >
+    <h2 className="text-[10px] font-bold uppercase tracking-[0.35em] mb-4" style={{ color: "#4a4a4a" }}>
       {children}
     </h2>
-  );
-}
-
-function Divider() {
-  return (
-    <div
-      className="h-px w-full my-12"
-      style={{ background: "linear-gradient(to right, #1e1e1e, transparent)" }}
-    />
   );
 }
 
@@ -65,198 +53,187 @@ export default function Home() {
   const totalOnline = Object.values(healthMap).filter((h) => h.status === "online").length;
   const allLoaded = Object.keys(healthMap).length === SERVICES.length;
   const allOnline = allLoaded && totalOnline === SERVICES.length;
+  const statusColor = !allLoaded ? "#747474" : allOnline ? "#99CE24" : "#E8B923";
 
   return (
     <div style={{ background: "#101010", minHeight: "100dvh" }}>
       <PatternStrip />
 
-      <div className="max-w-5xl mx-auto px-6 py-12 pr-20">
+      {/* Top status bar */}
+      <div
+        style={{
+          borderBottom: "1px solid #1a1a1a",
+          background: "#0c0c0c",
+        }}
+      >
+        <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-10 py-2.5 flex items-center justify-between gap-4">
+          <div className="flex items-center gap-2.5">
+            <span
+              className="block rounded-full"
+              style={{
+                width: 7,
+                height: 7,
+                background: statusColor,
+                boxShadow: allLoaded ? `0 0 6px ${statusColor}88` : "none",
+                flexShrink: 0,
+              }}
+            />
+            <span className="text-[11px] font-bold tracking-widest uppercase" style={{ color: statusColor }}>
+              {!allLoaded
+                ? "Checking…"
+                : allOnline
+                ? "All Systems Online"
+                : `${totalOnline} / ${SERVICES.length} Online`}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-4">
+            {lastUpdated && (
+              <span className="text-[10px] hidden sm:block" style={{ color: "#3a3a3a" }}>
+                Updated {lastUpdated.toLocaleTimeString()}
+              </span>
+            )}
+            <button
+              onClick={fetchHealth}
+              disabled={isRefreshing}
+              className="text-[10px] font-bold uppercase tracking-widest transition-colors"
+              style={{
+                color: isRefreshing ? "#3a3a3a" : "#99CE24",
+                background: "none",
+                border: "none",
+                cursor: isRefreshing ? "default" : "pointer",
+                padding: "4px 0",
+              }}
+            >
+              {isRefreshing ? "Checking…" : "↻ Refresh"}
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content */}
+      <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-10 py-10 sm:py-14 pr-16 sm:pr-20 lg:pr-20">
 
         {/* ── Header ─────────────────────────────────────────── */}
-        <header className="mb-16">
-          <div className="flex items-start justify-between gap-6">
-
-            {/* Brand */}
-            <div>
-              <div className="flex items-center gap-3 mb-3">
-                <div
-                  style={{
-                    width: 28,
-                    height: 28,
-                    borderRadius: "8px 0 8px 0",
-                    background: "#99CE24",
-                    flexShrink: 0,
-                  }}
-                />
-                <span
-                  className="text-xs font-bold tracking-[0.3em] uppercase"
-                  style={{ color: "#99CE24" }}
-                >
-                  LOCOL
-                </span>
-              </div>
-
-              <h1
-                className="text-5xl font-bold uppercase tracking-tight leading-none mb-3"
-                style={{ color: "#ffffff" }}
-              >
-                The Ranch
-              </h1>
-              <p className="text-sm" style={{ color: "#747474" }}>
-                All services, websites, and farmhands — in one place.
-              </p>
-            </div>
-
-            {/* Health summary card */}
+        <header className="mb-10 sm:mb-14">
+          <div className="flex items-center gap-3 mb-5">
             <div
-              className="locol-card px-5 py-4 text-right flex-shrink-0"
-              style={{ minWidth: 148 }}
-            >
-              <div
-                className="text-3xl font-bold leading-none"
-                style={{ color: allOnline ? "#99CE24" : "#E8B923" }}
-              >
-                {!allLoaded ? "—" : `${totalOnline}/${SERVICES.length}`}
-              </div>
-              <div
-                className="text-[10px] font-bold tracking-widest uppercase mt-1.5"
-                style={{ color: "#747474" }}
-              >
-                Services Online
-              </div>
-
-              <button
-                onClick={fetchHealth}
-                disabled={isRefreshing}
-                className="mt-3 text-[10px] font-bold uppercase tracking-widest block w-full text-right transition-colors"
-                style={{
-                  color: isRefreshing ? "#3a3a3a" : "#99CE24",
-                  background: "none",
-                  border: "none",
-                  cursor: isRefreshing ? "default" : "pointer",
-                  padding: 0,
-                }}
-              >
-                {isRefreshing ? "Checking…" : "↻ Refresh"}
-              </button>
-
-              {lastUpdated && (
-                <div className="text-[9px] mt-1" style={{ color: "#2a2a2a" }}>
-                  {lastUpdated.toLocaleTimeString()}
-                </div>
-              )}
-            </div>
+              style={{
+                width: 26,
+                height: 26,
+                borderRadius: "8px 0 8px 0",
+                background: "#99CE24",
+                flexShrink: 0,
+              }}
+            />
+            <span className="text-xs font-bold tracking-[0.3em] uppercase" style={{ color: "#99CE24" }}>
+              LOCOL
+            </span>
           </div>
+
+          <h1 className="text-4xl sm:text-5xl font-bold uppercase tracking-tight leading-none mb-3" style={{ color: "#ffffff" }}>
+            The Ranch
+          </h1>
+          <p className="text-sm sm:text-base" style={{ color: "#747474", maxWidth: 480 }}>
+            All services, websites, and farmhands — monitored in one place.
+          </p>
 
           {/* Green accent line */}
           <div
             className="mt-8 h-px"
             style={{
-              background:
-                "linear-gradient(to right, #99CE24 0%, #99CE2422 50%, transparent 100%)",
+              background: "linear-gradient(to right, #99CE24 0%, #99CE2422 40%, transparent 100%)",
             }}
           />
         </header>
 
         {/* ── Websites ───────────────────────────────────────── */}
-        <section>
+        <section className="mb-12 sm:mb-16">
           <SectionLabel>Websites</SectionLabel>
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
             {WEBSITE_SERVICES.map((s) => (
               <WebsiteCard key={s.id} service={s} health={healthMap[s.id]} />
             ))}
           </div>
         </section>
 
-        <Divider />
+        {/* ── Infrastructure + Farmhands — side-by-side on desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-10 mb-12 sm:mb-16">
 
-        {/* ── Infrastructure ─────────────────────────────────── */}
-        <section>
-          <SectionLabel>Infrastructure</SectionLabel>
-          <div className="flex flex-col gap-3">
-            {INFRA_SERVICES.map((s) => (
-              <MiniCard key={s.id} service={s} health={healthMap[s.id]} />
-            ))}
-          </div>
-        </section>
+          <section>
+            <SectionLabel>Infrastructure</SectionLabel>
+            <div className="flex flex-col gap-2.5">
+              {INFRA_SERVICES.map((s) => (
+                <MiniCard key={s.id} service={s} health={healthMap[s.id]} />
+              ))}
+            </div>
+          </section>
 
-        <Divider />
+          <section>
+            <SectionLabel>Farmhands — Bots &amp; Agents</SectionLabel>
+            <div className="flex flex-col gap-2.5">
+              {BOT_SERVICES.map((s) => (
+                <MiniCard key={s.id} service={s} health={healthMap[s.id]} />
+              ))}
+            </div>
+          </section>
 
-        {/* ── Farmhands ──────────────────────────────────────── */}
-        <section>
-          <SectionLabel>Farmhands — Bots &amp; Agents</SectionLabel>
-          <div className="flex flex-col gap-3">
-            {BOT_SERVICES.map((s) => (
-              <MiniCard key={s.id} service={s} health={healthMap[s.id]} />
-            ))}
-          </div>
-        </section>
-
-        <Divider />
+        </div>
 
         {/* ── Missing health endpoints notice ────────────────── */}
-        <section>
-          <SectionLabel>Services without /health endpoint</SectionLabel>
-          <div
-            className="locol-card p-5"
-            style={{ borderColor: "#1e1e1e" }}
-          >
-            <p className="text-xs mb-3" style={{ color: "#747474" }}>
-              These services use a plain HTTP check (2xx/3xx = online). Add a{" "}
-              <code
-                className="px-1 py-0.5 font-mono"
-                style={{ background: "#1a1a1a", color: "#99CE24", borderRadius: "2px" }}
-              >
-                GET /health
-              </code>{" "}
-              endpoint returning{" "}
-              <code
-                className="px-1 py-0.5 font-mono"
-                style={{ background: "#1a1a1a", color: "#99CE24", borderRadius: "2px" }}
-              >
-                {`{"status":"ok","service":"<name>","version":"x.y.z"}`}
-              </code>{" "}
-              to unlock version tracking.
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {MISSING_HEALTH_ENDPOINTS.map((id) => {
-                const svc = SERVICES.find((s) => s.id === id)!;
-                return (
-                  <div
-                    key={id}
-                    className="flex items-center gap-2 px-3 py-1.5"
-                    style={{
-                      background: "#1a1a1a",
-                      borderRadius: "4px 0 4px 0",
-                      border: "1px solid #242424",
-                    }}
-                  >
-                    <span className="text-sm">{svc.emoji}</span>
-                    <span
-                      className="text-xs font-bold uppercase tracking-wide"
-                      style={{ color: "#747474" }}
+        {MISSING_HEALTH_ENDPOINTS.length > 0 && (
+          <section className="mb-12">
+            <SectionLabel>Services without /health endpoint</SectionLabel>
+            <div
+              className="locol-card p-4 sm:p-5"
+              style={{ borderColor: "#1c1c1c" }}
+            >
+              <p className="text-xs mb-3" style={{ color: "#4a4a4a" }}>
+                Plain HTTP check only — add{" "}
+                <code
+                  className="px-1 py-0.5 font-mono"
+                  style={{ background: "#1a1a1a", color: "#99CE24", borderRadius: "2px" }}
+                >
+                  GET /health → {"{"}&quot;status&quot;:&quot;ok&quot;,&quot;version&quot;:&quot;x.y.z&quot;{"}"}
+                </code>{" "}
+                to unlock version tracking.
+              </p>
+              <div className="flex flex-wrap gap-2">
+                {MISSING_HEALTH_ENDPOINTS.map((id) => {
+                  const svc = SERVICES.find((s) => s.id === id)!;
+                  return (
+                    <div
+                      key={id}
+                      className="locol-chip flex items-center gap-2 px-3 py-1.5"
+                      style={{
+                        background: "#1a1a1a",
+                        border: "1px solid #242424",
+                      }}
                     >
-                      {svc.name}
-                    </span>
-                  </div>
-                );
-              })}
+                      <span className="text-sm">{svc.emoji}</span>
+                      <span
+                        className="text-[10px] font-bold uppercase tracking-wide"
+                        style={{ color: "#4a4a4a" }}
+                      >
+                        {svc.name}
+                      </span>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        )}
 
         {/* ── Footer ─────────────────────────────────────────── */}
         <footer
-          className="mt-12 pt-6 flex items-center justify-between"
+          className="pt-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-2"
           style={{ borderTop: "1px solid #1a1a1a" }}
         >
-          <span
-            className="text-[10px] tracking-widest uppercase font-bold"
-            style={{ color: "#1e1e1e" }}
-          >
+          <span className="text-[10px] tracking-widest uppercase font-bold" style={{ color: "#2a2a2a" }}>
             LOCOL Ranch Co. — Low Carbon Local Thai Beef
           </span>
-          <span className="text-[9px]" style={{ color: "#1e1e1e" }}>
+          <span className="text-[10px]" style={{ color: "#2a2a2a" }}>
             Auto-refreshes every {POLL_INTERVAL / 1000}s
           </span>
         </footer>

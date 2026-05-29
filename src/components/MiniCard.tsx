@@ -14,19 +14,19 @@ export function MiniCard({ service, health }: Props) {
       href={service.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="locol-card group flex items-center gap-4 p-4 hover:no-underline relative overflow-hidden"
-      style={{ textDecoration: "none" }}
+      className="locol-card group flex items-center gap-3 sm:gap-4 px-4 py-3.5 relative overflow-hidden"
+      style={{ textDecoration: "none", minHeight: 56 }}
     >
       {/* Emoji */}
-      <span className="text-2xl flex-shrink-0">{service.emoji}</span>
+      <span className="text-xl sm:text-2xl flex-shrink-0">{service.emoji}</span>
 
-      {/* Name + description */}
+      {/* Name + tag + description */}
       <div className="flex-1 min-w-0">
-        <div className="flex items-center gap-2 mb-0.5">
-          <span className="text-sm font-bold uppercase tracking-wide truncate" style={{ color: "#ffffff" }}>
+        <div className="flex items-baseline gap-2 mb-0.5 flex-wrap">
+          <span className="text-sm font-bold uppercase tracking-wide" style={{ color: "#ffffff" }}>
             {service.name}
           </span>
-          <span className="text-[9px] font-bold tracking-widest flex-shrink-0" style={{ color: "#2e2e2e" }}>
+          <span className="text-[9px] font-bold tracking-widest flex-shrink-0" style={{ color: "#3a3a3a" }}>
             {service.tag.toUpperCase()}
           </span>
         </div>
@@ -35,7 +35,7 @@ export function MiniCard({ service, health }: Props) {
         </p>
       </div>
 
-      {/* Health */}
+      {/* Health badge */}
       <div className="flex-shrink-0">
         <HealthBadge
           status={status}

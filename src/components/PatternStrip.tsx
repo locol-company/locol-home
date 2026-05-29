@@ -1,10 +1,10 @@
-// Zigzag "L" staircase strip — right-edge brand element from LOCOL design guide
+// Fixed right-edge brand element — hidden on small screens to prevent overflow
 export function PatternStrip() {
   const count = 14;
   return (
     <div
       aria-hidden
-      className="fixed right-0 top-0 bottom-0 w-12 overflow-hidden pointer-events-none z-10 flex flex-col justify-center gap-0"
+      className="fixed right-0 top-0 bottom-0 w-12 overflow-hidden pointer-events-none z-10 hidden sm:flex flex-col justify-center"
     >
       <svg
         width="48"
@@ -18,12 +18,10 @@ export function PatternStrip() {
           const y = i * 28;
           const isGreen = i % 2 === 0;
           const color = isGreen ? "#99CE24" : "#ffffff";
-          const opacity = isGreen ? 0.18 : 0.06;
+          const opacity = isGreen ? 0.15 : 0.05;
           return (
             <g key={i} transform={`translate(${offset}, ${y})`}>
-              {/* Vertical bar of L */}
               <rect x="0" y="0" width="7" height="18" fill={color} opacity={opacity} />
-              {/* Horizontal base of L */}
               <rect x="0" y="13" width="18" height="7" fill={color} opacity={opacity} />
             </g>
           );

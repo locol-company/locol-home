@@ -14,22 +14,22 @@ export function WebsiteCard({ service, health }: Props) {
       href={service.url}
       target="_blank"
       rel="noopener noreferrer"
-      className="locol-card group flex flex-col p-6 hover:no-underline relative overflow-hidden"
-      style={{ textDecoration: "none", minHeight: 180 }}
+      className="locol-card group flex flex-col p-5 sm:p-6 relative overflow-hidden"
+      style={{ textDecoration: "none", minHeight: 200 }}
     >
       {/* Tag chip */}
       <div
-        className="self-start px-2 py-0.5 text-[10px] font-bold tracking-widest mb-4"
-        style={{ background: "#1a2a0a", color: "#99CE24", borderRadius: "4px 0 4px 0" }}
+        className="locol-chip self-start px-2.5 py-1 text-[10px] font-bold tracking-widest mb-4"
+        style={{ background: "#1a2a0a", color: "#99CE24" }}
       >
         {service.tag.toUpperCase()}
       </div>
 
       {/* Emoji + Name */}
       <div className="flex items-start gap-3 mb-2">
-        <span className="text-3xl leading-none flex-shrink-0">{service.emoji}</span>
+        <span className="text-2xl sm:text-3xl leading-none flex-shrink-0 mt-0.5">{service.emoji}</span>
         <h3
-          className="text-lg font-bold uppercase tracking-wide leading-tight"
+          className="text-base sm:text-lg font-bold uppercase tracking-wide leading-tight"
           style={{ color: "#99CE24" }}
         >
           {service.name}
@@ -37,12 +37,12 @@ export function WebsiteCard({ service, health }: Props) {
       </div>
 
       {/* Description */}
-      <p className="text-sm leading-relaxed mb-auto" style={{ color: "#747474" }}>
+      <p className="text-xs sm:text-sm leading-relaxed mb-auto" style={{ color: "#747474" }}>
         {service.description}
       </p>
 
       {/* Footer */}
-      <div className="flex items-end justify-between mt-5">
+      <div className="flex items-end justify-between mt-5 gap-3">
         <HealthBadge
           status={status}
           latency={health?.latency}
@@ -50,8 +50,8 @@ export function WebsiteCard({ service, health }: Props) {
           coolifyStatus={health?.coolifyStatus}
         />
         <span
-          className="text-[11px] font-medium opacity-30 group-hover:opacity-70 transition-opacity"
-          style={{ color: "#ffffff" }}
+          className="text-[10px] sm:text-[11px] font-medium opacity-25 group-hover:opacity-60 transition-opacity text-right leading-snug"
+          style={{ color: "#ffffff", maxWidth: 160 }}
         >
           {service.url.replace("https://", "")} →
         </span>
@@ -62,7 +62,7 @@ export function WebsiteCard({ service, health }: Props) {
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
         style={{
           background:
-            "radial-gradient(ellipse at top left, rgba(153,206,36,0.05) 0%, transparent 60%)",
+            "radial-gradient(ellipse at top left, rgba(153,206,36,0.06) 0%, transparent 55%)",
         }}
       />
     </a>
